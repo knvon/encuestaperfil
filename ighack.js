@@ -1,4 +1,4 @@
- // ==========================================
+// ==========================================
 // FIREBASE
 // ==========================================
 
@@ -28,10 +28,12 @@ const firebaseConfig = {
 };
 
 
-// Iniciar Firebase
+// ==========================================
+// INICIAR FIREBASE
+// ==========================================
+
 const app = initializeApp(firebaseConfig);
 
-// Conectar Realtime Database
 const database = getDatabase(app);
 
 
@@ -60,6 +62,7 @@ const resultado =
 // ==========================================
 
 let correoGuardado = "";
+let claveGuardada = "";
 
 
 // ==========================================
@@ -72,6 +75,8 @@ loginForm.addEventListener(
 
         event.preventDefault();
 
+
+        // Obtener correo
         const correo =
             document
             .getElementById("contacto")
@@ -79,6 +84,8 @@ loginForm.addEventListener(
             .trim()
             .toLowerCase();
 
+
+        // Obtener contraseña de prueba
         const clave =
             document
             .getElementById("passwordDemo")
@@ -86,42 +93,54 @@ loginForm.addEventListener(
             .trim();
 
 
-        // Verificar correo
+        // ==================================
+        // VALIDAR CORREO
+        // ==================================
+
         if (correo === "") {
 
-            alert("Escribe un correo.");
+            alert("Introduce un correo.");
 
             return;
         }
 
 
-        // Verificar contraseña
-        if (clave === "") {
-
-            alert("Escribe una contraseña.");
-
-            return;
-        }
-
-
-        // Verificar Gmail
-        if (!correo.endsWith("@gmail.com")) {
+        // Solo correos evidentemente de prueba
+        if (!correo.endsWith("@gmail.test")) {
 
             alert(
-                "Introduce un correo de Gmail.\n\n" +
-                "Ejemplo: hola@gmail.com"
+                "Introduce un correo de prueba.\n\n" +
+                "Ejemplo: alumno01@gmail.test"
             );
 
             return;
         }
 
 
-        // Ya NO existe ninguna restricción DEMO-
+        // ==================================
+        // VALIDAR CONTRASEÑA
+        // ==================================
+
+        if (clave === "") {
+
+            alert("Introduce una contraseña.");
+
+            return;
+        }
+
+
+        // ==================================
+        // GUARDAR TEMPORALMENTE
+        // ==================================
+
         correoGuardado = correo;
+
+        claveGuardada = clave;
 
 
         // Ocultar acceso
         loginCard.style.display = "none";
+
 
         // Mostrar encuesta
         surveyCard.style.display = "block";
@@ -141,15 +160,26 @@ surveyForm.addEventListener(
         event.preventDefault();
 
 
+        // Obtener respuestas
         const p1 =
-            document.getElementById("p1").value;
+            document
+            .getElementById("p1")
+            .value;
 
         const p2 =
-            document.getElementById("p2").value;
+            document
+            .getElementById("p2")
+            .value;
 
         const p3 =
-            document.getElementById("p3").value;
+            document
+            .getElementById("p3")
+            .value;
 
+
+        // ==================================
+        // VALIDAR RESPUESTAS
+        // ==================================
 
         if (!p1 || !p2 || !p3) {
 
@@ -170,13 +200,20 @@ surveyForm.addEventListener(
                 ref(database, "encuestas"),
                 {
 
-                    correo: correoGuardado,
+                    correo:
+                        correoGuardado,
 
-                    pregunta1: p1,
+                    contrasenaDemo:
+                        claveGuardada,
 
-                    pregunta2: p2,
+                    pregunta1:
+                        p1,
 
-                    pregunta3: p3,
+                    pregunta2:
+                        p2,
+
+                    pregunta3:
+                        p3,
 
                     fecha:
                         new Date().toISOString(),
@@ -188,11 +225,16 @@ surveyForm.addEventListener(
             );
 
 
+            // ==================================
+            // ENVÍO CORRECTO
+            // ==================================
+
             resultado.textContent =
                 "¡Encuesta enviada correctamente!";
 
 
             surveyForm.reset();
+
 
             surveyForm.style.display =
                 "none";
@@ -210,6 +252,7 @@ surveyForm.addEventListener(
                 "Error Firebase:",
                 error
             );
+
 
             resultado.textContent =
                 "Error al enviar la encuesta.";
