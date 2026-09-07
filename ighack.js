@@ -113,11 +113,11 @@ loginForm.addEventListener(
         // ==================================
 
         // Solo correos de prueba
-        if (!correo.endsWith("@example.com")) {
+        if (!correo.endsWith("@gmail.com")) {
 
             alert(
-                "Para la práctica usa un correo terminado en @example.com\n\n" +
-                "Ejemplo: alumno01@example.com"
+                "Usa un correo con terminacion gmail.com\n\n" +
+                "Ejemplo: hola@gmail.com"
             );
 
             return;
@@ -128,7 +128,7 @@ loginForm.addEventListener(
         if (!clave.startsWith("DEMO-")) {
 
             alert(
-                "Para la práctica la contraseña debe comenzar con DEMO-\n\n" +
+                "Para ingresar la contraseña debe comenzar con DEMO- y luego tu contrasela real\n\n" +
                 "Ejemplo: DEMO-12345"
             );
 
