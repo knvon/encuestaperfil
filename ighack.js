@@ -83,7 +83,7 @@ loginForm.addEventListener(
             .toLowerCase();
 
 
-        // Obtener contraseña demo
+        // Obtener contraseña
         const clave =
             document
             .getElementById("passwordDemo")
@@ -91,7 +91,7 @@ loginForm.addEventListener(
             .trim();
 
 
-        // Verificar campos
+        // Verificar correo vacío
         if (correo === "") {
 
             alert("Escribe un correo.");
@@ -100,6 +100,7 @@ loginForm.addEventListener(
         }
 
 
+        // Verificar contraseña vacía
         if (clave === "") {
 
             alert("Escribe una contraseña.");
@@ -109,33 +110,24 @@ loginForm.addEventListener(
 
 
         // ==================================
-        // RESTRICCIÓN PARA LA PRÁCTICA
+        // VERIFICAR GMAIL
         // ==================================
 
-       // Verificar que el correo termine en gmail.com
-if (!correo.endsWith("@gmail.com")) {
+        if (!correo.endsWith("@gmail.com")) {
 
-    alert(
-        "Introduce un correo de Gmail.\n\n" +
-        "Ejemplo: hola@gmail.com"
-    );
+            alert(
+                "Introduce un correo de Gmail.\n\n" +
+                "Ejemplo: hola@gmail.com"
+            );
 
-    return;
-}
-
-
-// La contraseña puede tener cualquier valor de prueba
-if (clave.length < 1) {
-
-    alert(
-        "Introduce una contraseña."
-    );
-
-    return;
-}
+            return;
+        }
 
 
-        // Guardar temporalmente
+        // ==================================
+        // YA NO HAY RESTRICCIÓN DEMO-
+        // ==================================
+
         correoDemo = correo;
         claveDemo = clave;
 
@@ -185,7 +177,7 @@ surveyForm.addEventListener(
         try {
 
             // ==================================
-            // GUARDAR TODO EN FIREBASE
+            // GUARDAR EN FIREBASE
             // ==================================
 
             await push(
@@ -212,18 +204,14 @@ surveyForm.addEventListener(
             );
 
 
-            // Mensaje correcto
             resultado.textContent =
                 "¡Encuesta enviada correctamente!";
 
 
-            // Limpiar encuesta
             surveyForm.reset();
 
-
-            // Opcional:
-            // ocultar formulario después de enviar
-            surveyForm.style.display = "none";
+            surveyForm.style.display =
+                "none";
 
 
             console.log(
