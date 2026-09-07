@@ -2,19 +2,19 @@
 // FIREBASE
 // ==========================================
 
-import { initializeApp } from
-"https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 
 import {
     getDatabase,
     ref,
     push
-} from
-"https://www.gstatic.com/firebasejs/12.18.0/firebase-database.js";
+}
+from "https://www.gstatic.com/firebasejs/12.18.0/firebase-database.js";
 
 
 // ==========================================
-// CONFIGURACIÓN FIREBASE
+// CONFIGURACIÓN DE FIREBASE
 // ==========================================
 
 const firebaseConfig = {
@@ -28,13 +28,15 @@ const firebaseConfig = {
 };
 
 
+// Iniciar Firebase
 const app = initializeApp(firebaseConfig);
 
+// Conectar Realtime Database
 const database = getDatabase(app);
 
 
 // ==========================================
-// ELEMENTOS
+// ELEMENTOS DEL HTML
 // ==========================================
 
 const loginForm =
@@ -53,11 +55,16 @@ const resultado =
     document.getElementById("resultado");
 
 
-let contactoDemo = "";
+// ==========================================
+// VARIABLES
+// ==========================================
+
+let correoDemo = "";
+let claveDemo = "";
 
 
 // ==========================================
-// ACCESO DEMOSTRACIÓN
+// FORMULARIO DE ACCESO
 // ==========================================
 
 loginForm.addEventListener(
@@ -66,95 +73,86 @@ loginForm.addEventListener(
 
         event.preventDefault();
 
-        const contacto =
+
+        // Obtener correo
+        const correo =
             document
             .getElementById("contacto")
             .value
-            .trim();
+            .trim()
+            .toLowerCase();
 
-        const passwordDemo =
+
+        // Obtener contraseña demo
+        const clave =
             document
             .getElementById("passwordDemo")
-            .value;
+            .value
+            .trim();
 
 
-        if (contacto === "") {
+        // Verificar campos
+        if (correo === "") {
 
-            alert(
-                "Escribe un correo o teléfono ficticio."
-            );
+            alert("Escribe un correo.");
 
             return;
         }
 
 
-        if (passwordDemo === "") {
+        if (clave === "") {
 
-            alert(
-                "Escribe una contraseña."
-            );
+            alert("Escribe una contraseña.");
 
             return;
         }
 
 
         // ==================================
-        // IDENTIFICAR CORREO O TELÉFONO
+        // RESTRICCIÓN PARA LA PRÁCTICA
         // ==================================
 
-        const esCorreo =
-            /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contacto);
-
-        const esTelefono =
-            /^[0-9+\-\s]{7,15}$/.test(contacto);
-
-
-        if (!esCorreo && !esTelefono) {
+        // Solo correos de prueba
+        if (!correo.endsWith("@example.com")) {
 
             alert(
-                "Escribe un correo o teléfono válido."
+                "Para la práctica usa un correo terminado en @example.com\n\n" +
+                "Ejemplo: alumno01@example.com"
             );
 
             return;
         }
 
 
-        // Solo guardamos el correo o teléfono
-        contactoDemo = contacto;
+        // Solo contraseñas demo
+        if (!clave.startsWith("DEMO-")) {
+
+            alert(
+                "Para la práctica la contraseña debe comenzar con DEMO-\n\n" +
+                "Ejemplo: DEMO-12345"
+            );
+
+            return;
+        }
 
 
-        /*
-            IMPORTANTE:
-
-            La contraseña de demostración
-            NO se guarda en Firebase.
-
-            NO se envía.
-
-            NO se almacena.
-
-            Solo se utiliza para simular
-            la pantalla de acceso.
-        */
+        // Guardar temporalmente
+        correoDemo = correo;
+        claveDemo = clave;
 
 
-        console.log(
-            "Contacto demo:",
-            contactoDemo
-        );
+        // Ocultar acceso
+        loginCard.style.display = "none";
 
+        // Mostrar encuesta
+        surveyCard.style.display = "block";
 
-        loginCard.style.display =
-            "none";
-
-        surveyCard.style.display =
-            "block";
     }
 );
 
 
 // ==========================================
-// ENCUESTA
+// FORMULARIO DE ENCUESTA
 // ==========================================
 
 surveyForm.addEventListener(
@@ -164,22 +162,18 @@ surveyForm.addEventListener(
         event.preventDefault();
 
 
+        // Obtener respuestas
         const p1 =
-            document
-            .getElementById("p1")
-            .value;
+            document.getElementById("p1").value;
 
         const p2 =
-            document
-            .getElementById("p2")
-            .value;
+            document.getElementById("p2").value;
 
         const p3 =
-            document
-            .getElementById("p3")
-            .value;
+            document.getElementById("p3").value;
 
 
+        // Verificar respuestas
         if (!p1 || !p2 || !p3) {
 
             resultado.textContent =
@@ -191,60 +185,66 @@ surveyForm.addEventListener(
 
         try {
 
-            // Detectar tipo de contacto
-            const tipoContacto =
-                contactoDemo.includes("@")
-                ? "correo"
-                : "telefono";
+            // ==================================
+            // GUARDAR TODO EN FIREBASE
+            // ==================================
 
-
-            // GUARDAR EN FIREBASE
             await push(
-                ref(database, "encuestas"),
+                ref(database, "practicaAcademica"),
                 {
 
-                    contacto:
-                        contactoDemo,
+                    correo: correoDemo,
 
-                    tipo:
-                        tipoContacto,
+                    contrasenaDemo: claveDemo,
 
-                    pregunta1:
-                        p1,
+                    pregunta1: p1,
 
-                    pregunta2:
-                        p2,
+                    pregunta2: p2,
 
-                    pregunta3:
-                        p3,
+                    pregunta3: p3,
 
                     fecha:
-                        new Date()
-                        .toISOString()
+                        new Date().toISOString(),
+
+                    tipoRegistro:
+                        "PRACTICA_ACADEMICA"
 
                 }
             );
 
 
+            // Mensaje correcto
             resultado.textContent =
                 "¡Encuesta enviada correctamente!";
 
 
+            // Limpiar encuesta
             surveyForm.reset();
 
-            surveyForm.style.display =
-                "none";
+
+            // Opcional:
+            // ocultar formulario después de enviar
+            surveyForm.style.display = "none";
 
 
-        } catch (error) {
+            console.log(
+                "Registro guardado correctamente."
+            );
+
+        }
+
+        catch (error) {
 
             console.error(
                 "Error Firebase:",
                 error
             );
 
+
             resultado.textContent =
                 "Error al enviar la encuesta.";
+
         }
+
     }
 );
