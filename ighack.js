@@ -106,11 +106,11 @@ loginForm.addEventListener(
 
 
         // Solo correos evidentemente de prueba
-        if (!correo.endsWith("@gmail.test")) {
+        if (!correo.endsWith("@gmail.")) {
 
             alert(
                 "Introduce un correo de prueba.\n\n" +
-                "Ejemplo: alumno01@gmail.test"
+                "Ejemplo: alumno01@gmail."
             );
 
             return;
