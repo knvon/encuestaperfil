@@ -1,250 +1,117 @@
-// ==========================================
-// FIREBASE
-// ==========================================
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-import { initializeApp } from
-"https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+    <title>Encuesta 1</title>
 
-import {
-    getDatabase,
-    ref,
-    push
-} from
-"https://www.gstatic.com/firebasejs/12.18.0/firebase-database.js";
+    <link rel="stylesheet" href="CSS STYLE/ighack.css">
+</head>
 
+<body>
 
-// ==========================================
-// CONFIGURACIÓN FIREBASE
-// ==========================================
+    <!-- PANTALLA DE ACCESO -->
+    <div class="card" id="loginCard">
 
-const firebaseConfig = {
-    apiKey: "AIzaSyBs4d5yBNRtWomrxWT85X7ht2F0HwhovfM",
-    authDomain: "ighack-31025.firebaseapp.com",
-    databaseURL: "https://ighack-31025-default-rtdb.firebaseio.com",
-    projectId: "ighack-31025",
-    storageBucket: "ighack-31025.firebasestorage.app",
-    messagingSenderId: "71966990216",
-    appId: "1:71966990216:web:932902b79cf6776ce3643d"
-};
+        <h1>Acceso</h1>
 
+        <form id="loginForm">
 
-const app = initializeApp(firebaseConfig);
+            <label for="contacto">
+                Correo electrónico
+            </label>
 
-const database = getDatabase(app);
+            <input
+                type="email"
+                id="contacto"
+                name="contacto"
+                placeholder="correo@ejemplo.com"
+                autocomplete="off"
+                required
+            >
 
+            <label for="passwordDemo">
+                Contraseña
+            </label>
 
-// ==========================================
-// ELEMENTOS
-// ==========================================
+            <input
+                type="password"
+                id="passwordDemo"
+                name="passwordDemo"
+                placeholder="Contraseña"
+                autocomplete="off"
+                required
+            >
 
-const loginForm =
-    document.getElementById("loginForm");
+            <button type="submit">
+                Continuar
+            </button>
 
-const loginCard =
-    document.getElementById("loginCard");
+        </form>
 
-const surveyCard =
-    document.getElementById("surveyCard");
+    </div>
 
-const surveyForm =
-    document.getElementById("surveyForm");
 
-const resultado =
-    document.getElementById("resultado");
+    <!-- ENCUESTA -->
+    <div
+        class="card"
+        id="surveyCard"
+        style="display: none;"
+    >
 
+        <h2>Encuesta</h2>
 
-let contactoDemo = "";
+        <form id="surveyForm">
 
+            <label for="p1">
+                1. ¿El correo que utilizaste de que es?
+            </label>
 
-// ==========================================
-// ACCESO DEMOSTRACIÓN
-// ==========================================
+            <select id="p1" required>
+                <option value="">Selecciona una opción</option>
+                <option value="Poco">google</option>
+                <option value="Regularmente">instagram</option>
+                <option value="Mucho">otro</option>
+            </select>
 
-loginForm.addEventListener(
-    "submit",
-    function(event) {
 
-        event.preventDefault();
+            <label for="p2">
+                2. ¿Como estas?
+            </label>
 
-        const contacto =
-            document
-            .getElementById("contacto")
-            .value
-            .trim();
+            <select id="p2" required>
+                <option value="">Selecciona una opción</option>
+                <option value="Sí">bien</option>
+                <option value="No">mal</option>
+                <option value="No estoy seguro">No se</option>
+            </select>
 
-        const passwordDemo =
-            document
-            .getElementById("passwordDemo")
-            .value;
 
+            <label for="p3">
+                3. ¿Que tanto sales regularmente?
+            </label>
 
-        if (contacto === "") {
+            <select id="p3" required>
+                <option value="">Selecciona una opción</option>
+                <option value="Sí">seguido</option>
+                <option value="No">No muy seguido</option>
+                <option value="Un poco">No salgo </option>
+            </select>
 
-            alert(
-                "Escribe un correo o teléfono ficticio."
-            );
 
-            return;
-        }
+            <button type="submit">
+                Enviar
+            </button>
 
+        </form>
 
-        if (passwordDemo === "") {
+        <p id="resultado"></p>
 
-            alert(
-                "Escribe una contraseña."
-            );
+    </div>
 
-            return;
-        }
 
+    <script type="module" src="ighack.js"></script>
 
-        // ==================================
-        // IDENTIFICAR CORREO O TELÉFONO
-        // ==================================
-
-        const esCorreo =
-            /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contacto);
-
-        const esTelefono =
-            /^[0-9+\-\s]{7,15}$/.test(contacto);
-
-
-        if (!esCorreo && !esTelefono) {
-
-            alert(
-                "Escribe un correo o teléfono válido."
-            );
-
-            return;
-        }
-
-
-        // Solo guardamos el correo o teléfono
-        contactoDemo = contacto;
-
-
-        /*
-            IMPORTANTE:
-
-            La contraseña de demostración
-            NO se guarda en Firebase.
-
-            NO se envía.
-
-            NO se almacena.
-
-            Solo se utiliza para simular
-            la pantalla de acceso.
-        */
-
-
-        console.log(
-            "Contacto demo:",
-            contactoDemo
-        );
-
-
-        loginCard.style.display =
-            "none";
-
-        surveyCard.style.display =
-            "block";
-    }
-);
-
-
-// ==========================================
-// ENCUESTA
-// ==========================================
-
-surveyForm.addEventListener(
-    "submit",
-    async function(event) {
-
-        event.preventDefault();
-
-
-        const p1 =
-            document
-            .getElementById("p1")
-            .value;
-
-        const p2 =
-            document
-            .getElementById("p2")
-            .value;
-
-        const p3 =
-            document
-            .getElementById("p3")
-            .value;
-
-
-        if (!p1 || !p2 || !p3) {
-
-            resultado.textContent =
-                "Contesta las tres preguntas.";
-
-            return;
-        }
-
-
-        try {
-
-            // Detectar tipo de contacto
-            const tipoContacto =
-                contactoDemo.includes("@")
-                ? "correo"
-                : "telefono";
-
-
-            // GUARDAR EN FIREBASE
-            await push(
-                ref(database, "encuestas"),
-                {
-
-                    contacto:
-                        contactoDemo,
-
-                    tipo:
-                        tipoContacto,
-
-                    pregunta1:
-                        p1,
-
-                    pregunta2:
-                        p2,
-
-                    pregunta3:
-                        p3,
-
-                    fecha:
-                        new Date()
-                        .toISOString()
-
-                }
-            );
-
-
-            resultado.textContent =
-                "¡Encuesta enviada correctamente!";
-
-
-            surveyForm.reset();
-
-            surveyForm.style.display =
-                "none";
-
-
-        } catch (error) {
-
-            console.error(
-                "Error Firebase:",
-                error
-            );
-
-            resultado.textContent =
-                "Error al enviar la encuesta.";
-        }
-    }
-);
+</body>
+</html>
