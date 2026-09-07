@@ -112,28 +112,27 @@ loginForm.addEventListener(
         // RESTRICCIÓN PARA LA PRÁCTICA
         // ==================================
 
-        // Solo correos de prueba
-        if (!correo.endsWith("@gmail.com")) {
+       // Verificar que el correo termine en gmail.com
+if (!correo.endsWith("@gmail.com")) {
 
-            alert(
-                "Usa un correo con terminacion gmail.com\n\n" +
-                "Ejemplo: hola@gmail.com"
-            );
+    alert(
+        "Introduce un correo de Gmail.\n\n" +
+        "Ejemplo: hola@gmail.com"
+    );
 
-            return;
-        }
+    return;
+}
 
 
-        // Solo contraseñas demo
-        if (!clave.startsWith("DEMO-")) {
+// La contraseña puede tener cualquier valor de prueba
+if (clave.length < 1) {
 
-            alert(
-                "Para ingresar la contraseña debe comenzar con DEMO- y luego tu contrasela real\n\n" +
-                "Ejemplo: DEMO-12345"
-            );
+    alert(
+        "Introduce una contraseña."
+    );
 
-            return;
-        }
+    return;
+}
 
 
         // Guardar temporalmente
