@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Encuesta 1</title>
+
+    <link rel="stylesheet" href="CSS STYLE/ighack.css">
+</head>
+
+<body>
+
+    <!-- PANTALLA DE ACCESO -->
+    <div class="card" id="loginCard">
+
+        <h1>Acceso</h1>
+
+        <form id="loginForm">
+
+            <label for="contacto">
+                Correo electrónico
+            </label>
+
+            <input
+                type="email"
+                id="contacto"
+                name="contacto"
+                placeholder="correo@ejemplo.com"
+                autocomplete="off"
+                required
+            >
+
+            <label for="passwordDemo">
+                Contraseña
+            </label>
+
+            <input
+                type="password"
+                id="passwordDemo"
+                name="passwordDemo"
+                placeholder="Contraseña"
+                autocomplete="off"
+                required
+            >
+
+            <button type="submit">
+                Continuar
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- ENCUESTA -->
+    <div
+        class="card"
+        id="surveyCard"
+        style="display: none;"
+    >
+
+        <h2>Encuesta</h2>
+
+        <form id="surveyForm">
+
+            <label for="p1">
+                1. ¿Con qué frecuencia utilizas redes sociales?
+            </label>
+
+            <select id="p1" required>
+                <option value="">Selecciona una opción</option>
+                <option value="Poco">Poco</option>
+                <option value="Regularmente">Regularmente</option>
+                <option value="Mucho">Mucho</option>
+            </select>
+
+
+            <label for="p2">
+                2. ¿Como estas?
+            </label>
+
+            <select id="p2" required>
+                <option value="">Selecciona una opción</option>
+                <option value="Sí">bien</option>
+                <option value="No">mal</option>
+                <option value="No estoy seguro">No se</option>
+            </select>
+
+
+            <label for="p3">
+                3. ¿Que tanto sales regularmente?
+            </label>
+
+            <select id="p3" required>
+                <option value="">Selecciona una opción</option>
+                <option value="Sí">seguido</option>
+                <option value="No">No muy seguido</option>
+                <option value="Un poco">No salgo </option>
+            </select>
+
+
+            <button type="submit">
+                Enviar
+            </button>
+
+        </form>
+
+        <p id="resultado"></p>
+
+    </div>
+
+
+    <script type="module" src="ighack.js"></script>
+
+</body>
+</html>
