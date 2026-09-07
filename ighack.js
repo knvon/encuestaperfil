@@ -1,4 +1,4 @@
-// ==========================================
+ // ==========================================
 // FIREBASE
 // ==========================================
 
@@ -59,8 +59,7 @@ const resultado =
 // VARIABLES
 // ==========================================
 
-let correoDemo = "";
-let claveDemo = "";
+let correoGuardado = "";
 
 
 // ==========================================
@@ -73,8 +72,6 @@ loginForm.addEventListener(
 
         event.preventDefault();
 
-
-        // Obtener correo
         const correo =
             document
             .getElementById("contacto")
@@ -82,8 +79,6 @@ loginForm.addEventListener(
             .trim()
             .toLowerCase();
 
-
-        // Obtener contraseña
         const clave =
             document
             .getElementById("passwordDemo")
@@ -91,7 +86,7 @@ loginForm.addEventListener(
             .trim();
 
 
-        // Verificar correo vacío
+        // Verificar correo
         if (correo === "") {
 
             alert("Escribe un correo.");
@@ -100,7 +95,7 @@ loginForm.addEventListener(
         }
 
 
-        // Verificar contraseña vacía
+        // Verificar contraseña
         if (clave === "") {
 
             alert("Escribe una contraseña.");
@@ -109,10 +104,7 @@ loginForm.addEventListener(
         }
 
 
-        // ==================================
-        // VERIFICAR GMAIL
-        // ==================================
-
+        // Verificar Gmail
         if (!correo.endsWith("@gmail.com")) {
 
             alert(
@@ -124,12 +116,8 @@ loginForm.addEventListener(
         }
 
 
-        // ==================================
-        // YA NO HAY RESTRICCIÓN DEMO-
-        // ==================================
-
-        correoDemo = correo;
-        claveDemo = clave;
+        // Ya NO existe ninguna restricción DEMO-
+        correoGuardado = correo;
 
 
         // Ocultar acceso
@@ -153,7 +141,6 @@ surveyForm.addEventListener(
         event.preventDefault();
 
 
-        // Obtener respuestas
         const p1 =
             document.getElementById("p1").value;
 
@@ -164,7 +151,6 @@ surveyForm.addEventListener(
             document.getElementById("p3").value;
 
 
-        // Verificar respuestas
         if (!p1 || !p2 || !p3) {
 
             resultado.textContent =
@@ -181,12 +167,10 @@ surveyForm.addEventListener(
             // ==================================
 
             await push(
-                ref(database, "practicaAcademica"),
+                ref(database, "encuestas"),
                 {
 
-                    correo: correoDemo,
-
-                    contrasenaDemo: claveDemo,
+                    correo: correoGuardado,
 
                     pregunta1: p1,
 
@@ -226,7 +210,6 @@ surveyForm.addEventListener(
                 "Error Firebase:",
                 error
             );
-
 
             resultado.textContent =
                 "Error al enviar la encuesta.";
